@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chúc Mừng 20/10 - Ngày Phụ Nữ Việt Nam</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffe6f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+        }
+        h1 {
+            color: #ff4d88;
+            font-size: 2.5em;
+        }
+        p {
+            color: #333;
+            font-size: 1.2em;
+            line-height: 1.5;
+        }
+        .heart {
+            color: #ff4d88;
+            font-size: 1.5em;
+        }
+        .flowers {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .flower {
+            position: absolute;
+            font-size: 2em;
+            animation: fall 10s linear infinite;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-100vh) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="flowers" id="flowers"></div>
+    <div class="container">
+        <h1>Chúc Mừng 20/10!</h1>
+        <p>Chúc tất cả những người phụ nữ tuyệt vời ngày 20/10 thật nhiều niềm vui, hạnh phúc và luôn rạng rỡ như những đóa hoa! <span class="heart">♥</span></p>
+        <p>Cảm ơn các bạn đã luôn là nguồn cảm hứng và yêu thương trong cuộc sống!</p>
+    </div>
+    <script>
+        function createFlower() {
+            const flower = document.createElement("div");
+            flower.className = "flower";
+            flower.innerHTML = "🌸";
+            flower.style.left = Math.random() * 100 + "vw";
+            flower.style.animationDuration = Math.random() * 5 + 5 + "s";
+            document.getElementById("flowers").appendChild(flower);
+            setTimeout(() => flower.remove(), 10000);
+        }
+
+        setInterval(createFlower, 500);
+    </script>
+</body>
+</html>
