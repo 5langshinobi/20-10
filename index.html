@@ -3,113 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chúc Mừng 20/10 - Ngày Phụ Nữ Việt Nam</title>
+    <title>Chúc Mừng 20/10 - Tạp Chí 3D</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #ffe6f0, #ffccd5);
+            background: #e0e0e0;
+            margin: 0;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
             overflow: hidden;
-            animation: fadeIn 2s ease-in-out;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .magazine-3d {
+            position: relative;
+            width: 1200px;
+            height: 1000px;
+            transform-style: preserve-3d;
+            transition: transform 1s;
         }
-        .container {
-            text-align: center;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-            width: 400px;
-            transition: transform 0.3s ease;
+        .magazine-3d:hover {
+            transform: rotateY(10deg) scale(1.05);
         }
-        .container:hover {
-            transform: scale(1.05);
+        .page {
+            position: absolute;
+            width: 600px;
+            height: 100%;
+            background: #fff;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            transform-origin: left;
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 40px;
+            box-sizing: border-box;
+        }
+        .page-left {
+            left: 0;
+            transform: rotateY(0deg);
+            z-index: 2;
+        }
+        .page-right {
+            left: 600px;
+            transform: rotateY(-180deg);
+            background: linear-gradient(90deg, #fff, #f5f5f5);
+            z-index: 1;
+        }
+        .magazine-3d.flipped .page-left {
+            transform: rotateY(180deg);
+        }
+        .magazine-3d.flipped .page-right {
+            transform: rotateY(0deg);
+            z-index: 2;
         }
         h1 {
-            color: #ff4081;
-            font-size: 2.8em;
-            margin-bottom: 15px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 5em;
+            color: #000;
+            margin: 0;
+            line-height: 1;
+            font-weight: bold;
         }
-        p {
-            color: #444;
+        .title {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-size: 4em;
+            color: #333;
+            position: absolute;
+            top: 20px;
+            left: 10px;
+            transform: rotate(180deg);
+        }
+        .content {
             font-size: 1.3em;
-            line-height: 1.6;
-            margin-bottom: 20px;
+            color: #555;
+            line-height: 1.7;
         }
-        .heart {
-            color: #ff4081;
-            font-size: 1.8em;
-            animation: pulse 1.5s infinite;
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
-        .flowers {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-        .flower {
-            position: absolute;
-            font-size: 1.5em;
-            animation: fall 8s linear infinite;
-        }
-        @keyframes fall {
-            0% { transform: translateY(-100vh) rotate(0deg); }
-            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
-        }
-        a {
+        .highlight {
+            background: #f8a19f;
+            padding: 10px;
+            color: #fff;
             display: inline-block;
-            padding: 10px 20px;
-            background: linear-gradient(45deg, #ff80ab, #ff4081);
-            color: white;
-            text-decoration: none;
-            border-radius: 25px;
-            font-size: 1.1em;
-            transition: all 0.3s ease;
         }
-        a:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(255, 64, 129, 0.4);
+        .image-placeholder {
+            width: 100%;
+            height: 500px;
+            margin: 20px 0;
+            object-fit: cover;
+        }
+        button {
+            padding: 20px 40px;
+            background: #d32f5e;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-size: 1.5em;
+        }
+        button:hover {
+            background: #b71c4c;
         }
     </style>
 </head>
 <body>
-    <div class="flowers" id="flowers"></div>
-    <div class="container">
-        <h1>Chúc Mừng 20/10!</h1>
-        <p>Chúc tất cả những người phụ nữ tuyệt vời ngày 20/10 thật nhiều niềm vui, hạnh phúc và luôn rạng rỡ như những đóa hoa! <span class="heart">♥</span></p>
-        <p>Cảm ơn các bạn đã luôn là nguồn cảm hứng và yêu thương trong cuộc sống!</p>
-        <a href="login.html">Đăng nhập để xem thêm nội dung</a>
+    <div class="magazine-3d" onclick="flipMagazine()">
+        <div class="page page-left">
+            <div class="content">
+                <h1>20/10</h1>
+                <p>Chúc Mừng Ngày Phụ Nữ Việt Nam</p>
+                <img src="https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=1570923850986029" alt="Bìa tạp chí 20/10" class="image-placeholder">
+                <p><span class="highlight">Tin tức:</span> Chúc mừng tất cả phụ nữ với những khoảnh khắc tuyệt vời!</p>
+                <p>Lịch sự kiện: 20/10/2025 - Lễ hội hoa.</p>
+            </div>
+            <button>Chuyển trang</button>
+        </div>
+        <div class="page page-right">
+            <div class="title">Tạp Chí</div>
+            <div class="content">
+                <img src="https://png.pngtree.com/template/20230615/ourmid/pngtree-vietnamese-womens-day-floral-romantic-style-poster-image_1968636.jpg" alt="Poster 20/10" class="image-placeholder">
+                <p><span class="highlight">Chủ đề:</span> Tôn vinh vẻ đẹp phụ nữ.</p>
+                <p>Khám phá thêm tại <a href="login.html" style="color: #d32f5e;">đăng nhập</a>.</p>
+            </div>
+            <button>Quay lại</button>
+        </div>
     </div>
     <script>
-        function createFlower() {
-            const flower = document.createElement("div");
-            flower.className = "flower";
-            const flowers = ["🌸", "🌹", "🌷"];
-            flower.innerHTML = flowers[Math.floor(Math.random() * flowers.length)];
-            flower.style.left = Math.random() * 100 + "vw";
-            flower.style.animationDuration = Math.random() * 5 + 5 + "s";
-            flower.style.color = ['#ff80ab', '#ff4081', '#ffccd5'][Math.floor(Math.random() * 3)];
-            document.getElementById("flowers").appendChild(flower);
-            setTimeout(() => flower.remove(), 10000);
+        let flipped = false;
+        function flipMagazine() {
+            const magazine = document.querySelector('.magazine-3d');
+            flipped = !flipped;
+            magazine.classList.toggle('flipped');
         }
-
-        setInterval(createFlower, 400);
     </script>
 </body>
 </html>
