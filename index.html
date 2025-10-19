@@ -6,35 +6,53 @@
     <title>Chúc Mừng 20/10 - Ngày Phụ Nữ Việt Nam</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #ffe6f0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ffe6f0, #ffccd5);
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
             overflow: hidden;
+            animation: fadeIn 2s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         .container {
             text-align: center;
-            background-color: #fff;
+            background: rgba(255, 255, 255, 0.9);
             padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            max-width: 500px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            transition: transform 0.3s ease;
+        }
+        .container:hover {
+            transform: scale(1.05);
         }
         h1 {
-            color: #ff4d88;
-            font-size: 2.5em;
+            color: #ff4081;
+            font-size: 2.8em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
         p {
-            color: #333;
-            font-size: 1.2em;
-            line-height: 1.5;
+            color: #444;
+            font-size: 1.3em;
+            line-height: 1.6;
+            margin-bottom: 20px;
         }
         .heart {
-            color: #ff4d88;
-            font-size: 1.5em;
+            color: #ff4081;
+            font-size: 1.8em;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
         }
         .flowers {
             position: absolute;
@@ -47,35 +65,51 @@
         }
         .flower {
             position: absolute;
-            font-size: 2em;
-            animation: fall 10s linear infinite;
+            font-size: 1.5em;
+            animation: fall 8s linear infinite;
         }
         @keyframes fall {
             0% { transform: translateY(-100vh) rotate(0deg); }
-            100% { transform: translateY(100vh) rotate(360deg); }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+        a {
+            display: inline-block;
+            padding: 10px 20px;
+            background: linear-gradient(45deg, #ff80ab, #ff4081);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+        }
+        a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 64, 129, 0.4);
         }
     </style>
 </head>
 <body>
     <div class="flowers" id="flowers"></div>
     <div class="container">
-        <a href="login.html" style="display: block; margin-top: 20px; color: #ff4d88;">Đăng nhập để xem thêm nội dung</a>
         <h1>Chúc Mừng 20/10!</h1>
         <p>Chúc tất cả những người phụ nữ tuyệt vời ngày 20/10 thật nhiều niềm vui, hạnh phúc và luôn rạng rỡ như những đóa hoa! <span class="heart">♥</span></p>
         <p>Cảm ơn các bạn đã luôn là nguồn cảm hứng và yêu thương trong cuộc sống!</p>
+        <a href="login.html">Đăng nhập để xem thêm nội dung</a>
     </div>
     <script>
         function createFlower() {
             const flower = document.createElement("div");
             flower.className = "flower";
-            flower.innerHTML = "🌸";
+            const flowers = ["🌸", "🌹", "🌷"];
+            flower.innerHTML = flowers[Math.floor(Math.random() * flowers.length)];
             flower.style.left = Math.random() * 100 + "vw";
             flower.style.animationDuration = Math.random() * 5 + 5 + "s";
+            flower.style.color = ['#ff80ab', '#ff4081', '#ffccd5'][Math.floor(Math.random() * 3)];
             document.getElementById("flowers").appendChild(flower);
             setTimeout(() => flower.remove(), 10000);
         }
 
-        setInterval(createFlower, 500);
+        setInterval(createFlower, 400);
     </script>
 </body>
 </html>
