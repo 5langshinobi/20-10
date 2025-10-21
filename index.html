@@ -13,7 +13,6 @@
         }
         body {
             font-family: 'Arial', sans-serif;
-            background: #e0e0e0;
             margin: 0;
             height: 100%;
             overflow-y: auto;
@@ -21,12 +20,14 @@
             flex-direction: column;
             align-items: center;
             padding-top: 80px; /* Để header không che nội dung */
+            background: #f0f0f0; /* Nền chung nhẹ nhàng */
+            color: #333;
         }
         .site-header {
             position: fixed;
             top: 0;
             width: 100%;
-            background: #fff;
+            background: rgba(255, 255, 255, 0.9);
             padding: 10px 20px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             z-index: 10;
@@ -52,8 +53,9 @@
         label {
             cursor: pointer;
             padding: 5px 10px;
-            background: #f0f0f0;
+            background: rgba(240, 240, 240, 0.9);
             border-radius: 5px;
+            color: #333;
         }
         input[type="radio"]:checked + label {
             background: #d32f5e;
@@ -78,12 +80,30 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        #snapping {
+            background: url('https://images.unsplash.com/photo-1593811169750-7e9a9a4ba0c6?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover;
+        }
+        #scrolling {
+            background: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover;
+        }
+        #layout {
+            background: url('https://images.unsplash.com/photo-1560587514-9a47bd25a2d2?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover;
+        }
+        #transition {
+            background: url('https://images.unsplash.com/photo-1600585154220-3e5e2e874c66?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover;
+        }
+        #caveats {
+            background: url('https://images.unsplash.com/photo-1600585154276-05d7e34f5c7b?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover;
         }
         .content {
             width: 80%;
             max-width: 1200px;
             padding: 20px;
-            background: #fff;
+            background: rgba(255, 255, 255, 0.85);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
             opacity: 0;
@@ -100,25 +120,25 @@
             height: auto;
         }
         code {
-            background: #f0f0f0;
+            background: rgba(240, 240, 240, 0.9);
             padding: 2px 5px;
             border-radius: 3px;
         }
         footer {
             text-align: center;
             padding: 20px;
-            background: #fff;
+            background: rgba(255, 255, 255, 0.9);
             width: 100%;
             margin-top: 20px;
         }
         /* Animations */
         @keyframes blink {
-            0%, 100% {
+            0% {
                 filter: blur(0.5rem) contrast(4);
                 opacity: 0;
                 visibility: hidden;
             }
-            50% {
+            100% {
                 filter: blur(0) contrast(1);
                 opacity: 1;
                 visibility: visible;
@@ -126,31 +146,28 @@
         }
         @keyframes horizontal-scroll {
             0% { transform: translateX(100%); }
-            50% { transform: translateX(0); }
-            100% { transform: translateX(-100%); }
+            100% { transform: translateX(0); }
         }
         @keyframes backwards-scroll {
             0% { transform: translateY(-100%); }
-            50% { transform: translateY(0); }
-            100% { transform: translateY(100%); }
+            100% { transform: translateY(0); }
         }
         @keyframes zoom-scroll {
             0% { transform: scale(0); opacity: 0; }
-            50% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(1.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
         }
-        /* Apply animation based on radio input */
+        /* Apply animation based on radio input, all run once */
         body:has([value="blink"]:checked) .content {
-            animation: blink 2s infinite;
+            animation: blink 1s forwards;
         }
         body:has([value="horizontal-scroll"]:checked) .content {
-            animation: horizontal-scroll 2s infinite;
+            animation: horizontal-scroll 1.5s forwards;
         }
         body:has([value="backwards-scroll"]:checked) .content {
-            animation: backwards-scroll 2s infinite;
+            animation: backwards-scroll 1.5s forwards;
         }
         body:has([value="zoom-scroll"]:checked) .content {
-            animation: zoom-scroll 2s infinite;
+            animation: zoom-scroll 1.5s forwards;
         }
     </style>
 </head>
@@ -196,8 +213,8 @@
                 <h2><strong>Next</strong>, we set up the <em>scrolling</em> animation</h2>
                 <div class="text">
                     <img src="https://assets.codepen.io/197359/flower-yellow.png" alt="">
-                    <p>We track the <code class="property">view()</code> position of the <code class="selector">section</code> elements using the named timeline <code class="property">view-timeline: --section;</code>.</p>
-                    <p>We animate the <code class="selector">.content</code> children using <code class="property">animation-timeline: --section;</code>.</p>
+                    <p>We track the <code class="property">view()</code> position of the <code class="selector">section</code> elements.</p>
+                    <p>We animate the <code class="selector">.content</code> children.</p>
                 </div>
             </div>
         </section>
@@ -206,8 +223,8 @@
                 <h2><strong>Then</strong>, we position a <em>fixed</em> layout</h2>
                 <div class="text">
                     <img src="https://assets.codepen.io/197359/flower-blue.png" alt="">
-                    <p>We set the <code class="selector">.content</code> elements to <code class="property">position: fixed</code>, so they're removed from the normal document flow and stack on top of each other.</p>
-                    <p>Their parent <code class="selector">section</code>s are positioned as normal in the layer below.</p>
+                    <p>We set the <code class="selector">.content</code> elements to <code class="property">position: fixed</code>.</p>
+                    <p>Their parent <code class="selector">section</code>s are positioned as normal.</p>
                 </div>
             </div>
         </section>
@@ -216,7 +233,7 @@
                 <h2><strong>Finally</strong>, we create the <em>transition</em> effects</h2>
                 <div class="text">
                     <img src="https://assets.codepen.io/197359/flower-red.png" alt="">
-                    <p>By setting the <code class="selector">.content</code> elements to <code class="property">position: fixed</code>, we can now transition between them.</p>
+                    <p>We can transition between them using fixed positioning.</p>
                     <p>Check the navigation menu to see different effects.</p>
                 </div>
             </div>
@@ -228,8 +245,8 @@
                     <img src="https://assets.codepen.io/197359/flower-purple.png" alt="">
                     <ul>
                         <li>Scrolling animations may not work fully in all browsers.</li>
-                        <li>This layout uses <code class="property">position: fixed</code>, requiring careful stacking management.</li>
-                        <li>Snapping points may limit content access if taller than viewport.</li>
+                        <li>This layout uses <code class="property">position: fixed</code>.</li>
+                        <li>Snapping points may limit content access.</li>
                     </ul>
                 </div>
             </div>
