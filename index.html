@@ -3,17 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chúc Mừng 20/10 - Tạp Chí 3D</title>
+    <title>Chúc Mừng 20/10 - Tạp Chí 3D với Hiệu Ứng Cuộn</title>
     <style>
+        /* Base styles */
+        @layer base, rhythm, layout, components, default, overwrites;
+        html {
+            scroll-snap-type: y mandatory;
+            height: 100%;
+        }
         body {
             font-family: 'Arial', sans-serif;
             background: #e0e0e0;
             margin: 0;
-            height: 100vh;
+            height: 100%;
+            overflow-y: auto;
             display: flex;
             justify-content: center;
-            align-items: center;
-            overflow: hidden;
+            align-items: flex-start;
+            padding-top: 80px; /* Để header không che nội dung */
         }
         .magazine-3d {
             position: relative;
@@ -21,6 +28,7 @@
             height: 1000px;
             transform-style: preserve-3d;
             transition: transform 1s;
+            margin-bottom: 20px;
         }
         .magazine-3d:hover {
             transform: rotateY(10deg) scale(1.05);
@@ -81,6 +89,19 @@
             font-size: 1.3em;
             color: #555;
             line-height: 1.7;
+            position: fixed;
+            width: 1200px;
+            height: 1000px;
+            padding: 40px;
+            box-sizing: border-box;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            opacity: 0;
+            transition: opacity 0.5s, transform 0.5s;
+            background: var(--color-background, #fff);
+        }
+        .content.active {
+            opacity: 1;
         }
         .highlight {
             background: #f8a19f;
@@ -107,29 +128,181 @@
         button:hover {
             background: #b71c4c;
         }
+        .site-header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: #fff;
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+        .fieldset-wrapper {
+            margin-bottom: 10px;
+        }
+        fieldset {
+            border: none;
+            display: flex;
+            gap: 10px;
+        }
+        label {
+            cursor: pointer;
+            padding: 5px 10px;
+            background: #f0f0f0;
+            border-radius: 5px;
+        }
+        input[type="radio"]:checked + label {
+            background: #d32f5e;
+            color: white;
+        }
+        nav ul.indicator {
+            list-style: none;
+            display: flex;
+            gap: 15px;
+            padding: 0;
+        }
+        nav ul.indicator li a {
+            text-decoration: none;
+            color: #d32f5e;
+            font-weight: bold;
+        }
+        .section {
+            height: 100vh;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            position: relative;
+        }
+        .text img {
+            float: left;
+            margin-right: 20px;
+            width: 100px;
+            height: auto;
+        }
+        code {
+            background: #f0f0f0;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #fff;
+            margin-top: 20px;
+        }
+        /* Animations */
+        @keyframes blink {
+            0%, 100% {
+                filter: blur(0.5rem) contrast(4);
+                opacity: 0;
+                visibility: hidden;
+            }
+            50% {
+                filter: blur(0) contrast(1);
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+        @keyframes horizontal-scroll {
+            0% { transform: translateX(100%); }
+            50% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+        @keyframes backwards-scroll {
+            0% { transform: translateY(-100%); }
+            50% { transform: translateY(0); }
+            100% { transform: translateY(100%); }
+        }
+        @keyframes zoom-scroll {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+        /* Apply animation based on radio input */
+        body:has([value="blink"]:checked) .content {
+            animation: blink 2s infinite;
+        }
+        body:has([value="horizontal-scroll"]:checked) .content {
+            animation: horizontal-scroll 2s infinite;
+        }
+        body:has([value="backwards-scroll"]:checked) .content {
+            animation: backwards-scroll 2s infinite;
+        }
+        body:has([value="zoom-scroll"]:checked) .content {
+            animation: zoom-scroll 2s infinite;
+        }
     </style>
 </head>
 <body>
+    <header class="site-header">
+        <h1 class="sr-only">Scrollnapping animations</h1>
+        <div class="fieldset-wrapper">
+            <fieldset>
+                <legend class="sr-only">Effects</legend>
+                <input type="radio" id="blink-effect" name="effect" value="blink" checked class="sr-only">
+                <label for="blink-effect">Blink</label>
+                <input type="radio" id="horizontal-scroll-effect" name="effect" value="horizontal-scroll" class="sr-only">
+                <label for="horizontal-scroll-effect">Horizontal scroll</label>
+                <input type="radio" id="backwards-scroll-effect" name="effect" value="backwards-scroll" class="sr-only">
+                <label for="backwards-scroll-effect">Backwards scroll</label>
+                <input type="radio" id="zoom-scroll-effect" name="effect" value="zoom-scroll" class="sr-only">
+                <label for="zoom-scroll-effect">Zoom scroll</label>
+            </fieldset>
+        </div>
+        <nav>
+            <ul class="indicator">
+                <li><a href="#snapping"><span class="sr-only">Snapping</span></a></li>
+                <li><a href="#scrolling"><span class="sr-only">Scrolling</span></a></li>
+                <li><a href="#layout"><span class="sr-only">Layout</span></a></li>
+                <li><a href="#transition"><span class="sr-only">Transition</span></a></li>
+                <li><a href="#caveats"><span class="sr-only">Caveats</span></a></li>
+            </ul>
+        </nav>
+    </header>
     <div class="magazine-3d" onclick="flipMagazine()">
         <div class="page page-left">
-            <div class="content">
-                <h1>20/10</h1>
-                <p>Chúc Mừng Ngày Phụ Nữ Việt Nam</p>
-                <img src="https://scontent.fsgn5-5.fna.fbcdn.net/v/t39.30808-6/565765280_122147633846813609_5647327141839693000_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeEjT5OMYDA0OCg0Fo_HDr80NlItb4M4a6I2Ui1vgzhrouU-dw-x2I999wjLZ8OPVVJEa1ChasRY0cC-29bvCIXP&_nc_ohc=vvuCecXGSAUQ7kNvwGWKm0g&_nc_oc=Adm2K-_iq7zjBQAAM71mco3H9rxAuS9N9eSym6dVocStiwlOT4McUeI1WdfNq5-oE7_rbMsBgwkUWvZ7bR5KHa5h&_nc_zt=23&_nc_ht=scontent.fsgn5-5.fna&_nc_gid=EvFMrMAoKJ7Y2AihQMXHIQ&oh=00_AfcNgyM7z28kIFWJLqH832K97oruxZzWf15TAqMDcniLWQ&oe=68FD7E51" class="image-placeholder">
-                <p><span class="highlight">Tin tức:</span> Chúc mừng tất cả phụ nữ với những khoảnh khắc tuyệt vời!</p>
-                <p>Lịch sự kiện: 20/10/2025 - Lễ hội hoa.</p>
+            <div class="content" id="snapping-content">
+                <h2><strong>First</strong>, we set up the <em>snapping</em> points</h2>
+                <div class="text">
+                    <img src="https://assets.codepen.io/197359/flower-white.png" alt="">
+                    <p>We set the scrolling element, in this case our <code class="selector">HTML</code> element, to forcibly snap to the Y axis by using <code class="property">scroll-snap-type: y mandatory</code>.</p>
+                    <p>And then we set <code class="selector">section</code> as the snapping elements by using <code class="property">scroll-snap-align: start</code>.</p>
+                </div>
             </div>
             <button>Chuyển trang</button>
         </div>
         <div class="page page-right">
             <div class="title">Tạp Chí</div>
-            <div class="content">
-                <img src="https://png.pngtree.com/template/20230615/ourmid/pngtree-vietnamese-womens-day-floral-romantic-style-poster-image_1968636.jpg" alt="Poster 20/10" class="image-placeholder">
-                <p><span class="highlight">Chủ đề:</span> Tôn vinh vẻ đẹp phụ nữ.</p>
+            <div class="content" id="scrolling-content">
+                <h2><strong>Next</strong>, we set up the <em>scrolling</em> animation</h2>
+                <div class="text">
+                    <img src="https://assets.codepen.io/197359/flower-yellow.png" alt="">
+                    <p>We track the <code class="property">view()</code> position of the <code class="selector">section</code> elements using the named timeline <code class="property">view-timeline: --section;</code>.</p>
+                    <p>We animate the <code class="selector">.content</code> children using <code class="property">animation-timeline: --section;</code>.</p>
+                </div>
             </div>
             <button>Quay lại</button>
         </div>
     </div>
+    <main>
+        <section id="snapping" class="section"></section>
+        <section id="scrolling" class="section"></section>
+        <section id="layout" class="section"></section>
+        <section id="transition" class="section"></section>
+        <section id="caveats" class="section"></section>
+    </main>
+    <footer>
+        <p>That's it <span class="emoji">🌸</span></p>
+    </footer>
     <script>
         let flipped = false;
         function flipMagazine() {
@@ -137,7 +310,19 @@
             flipped = !flipped;
             magazine.classList.toggle('flipped');
         }
+
+        // Simulate section activation
+        const sections = document.querySelectorAll('.section');
+        const contents = document.querySelectorAll('.content');
+        window.addEventListener('scroll', () => {
+            sections.forEach((section, index) => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top >= 0 && rect.top < window.innerHeight) {
+                    contents.forEach(content => content.classList.remove('active'));
+                    contents[index].classList.add('active');
+                }
+            });
+        });
     </script>
 </body>
-
 </html>
