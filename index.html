@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chúc Mừng 20/10 - Tạp Chí 3D với Hiệu Ứng Cuộn</title>
+    <title>Chúc Mừng 20/10 - Hiệu Ứng Cuộn</title>
     <style>
         /* Base styles */
         @layer base, rhythm, layout, components, default, overwrites;
@@ -18,115 +18,9 @@
             height: 100%;
             overflow-y: auto;
             display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding-top: 80px; /* Để header không che nội dung */
-        }
-        .magazine-3d {
-            position: relative;
-            width: 1200px;
-            height: 1000px;
-            transform-style: preserve-3d;
-            transition: transform 1s;
-            margin-bottom: 20px;
-        }
-        .magazine-3d:hover {
-            transform: rotateY(10deg) scale(1.05);
-        }
-        .page {
-            position: absolute;
-            width: 600px;
-            height: 100%;
-            background: #fff;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-            border-radius: 8px;
-            transform-origin: left;
-            transform-style: preserve-3d;
-            backface-visibility: hidden;
-            overflow: hidden;
-            display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            padding: 40px;
-            box-sizing: border-box;
-        }
-        .page-left {
-            left: 0;
-            transform: rotateY(0deg);
-            z-index: 2;
-        }
-        .page-right {
-            left: 600px;
-            transform: rotateY(-180deg);
-            background: linear-gradient(90deg, #fff, #f5f5f5);
-            z-index: 1;
-        }
-        .magazine-3d.flipped .page-left {
-            transform: rotateY(180deg);
-        }
-        .magazine-3d.flipped .page-right {
-            transform: rotateY(0deg);
-            z-index: 2;
-        }
-        h1 {
-            font-size: 5em;
-            color: #000;
-            margin: 0;
-            line-height: 1;
-            font-weight: bold;
-        }
-        .title {
-            writing-mode: vertical-rl;
-            text-orientation: mixed;
-            font-size: 4em;
-            color: #333;
-            position: absolute;
-            top: 20px;
-            left: 10px;
-            transform: rotate(180deg);
-        }
-        .content {
-            font-size: 1.3em;
-            color: #555;
-            line-height: 1.7;
-            position: fixed;
-            width: 1200px;
-            height: 1000px;
-            padding: 40px;
-            box-sizing: border-box;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-            border-radius: 8px;
-            opacity: 0;
-            transition: opacity 0.5s, transform 0.5s;
-            background: var(--color-background, #fff);
-        }
-        .content.active {
-            opacity: 1;
-        }
-        .highlight {
-            background: #f8a19f;
-            padding: 10px;
-            color: #fff;
-            display: inline-block;
-        }
-        .image-placeholder {
-            width: 100%;
-            height: 500px;
-            margin: 20px 0;
-            object-fit: cover;
-        }
-        button {
-            padding: 20px 40px;
-            background: #d32f5e;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.3s;
-            font-size: 1.5em;
-        }
-        button:hover {
-            background: #b71c4c;
+            align-items: center;
+            padding-top: 80px; /* Để header không che nội dung */
         }
         .site-header {
             position: fixed;
@@ -181,6 +75,23 @@
             scroll-snap-align: start;
             scroll-snap-stop: always;
             position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .content {
+            width: 80%;
+            max-width: 1200px;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            opacity: 0;
+            transition: opacity 0.5s;
+            text-align: center;
+        }
+        .content.active {
+            opacity: 1;
         }
         .text img {
             float: left;
@@ -197,6 +108,7 @@
             text-align: center;
             padding: 20px;
             background: #fff;
+            width: 100%;
             margin-top: 20px;
         }
         /* Animations */
@@ -268,9 +180,9 @@
             </ul>
         </nav>
     </header>
-    <div class="magazine-3d" onclick="flipMagazine()">
-        <div class="page page-left">
-            <div class="content" id="snapping-content">
+    <main>
+        <section id="snapping" class="section">
+            <div class="content">
                 <h2><strong>First</strong>, we set up the <em>snapping</em> points</h2>
                 <div class="text">
                     <img src="https://assets.codepen.io/197359/flower-white.png" alt="">
@@ -278,11 +190,9 @@
                     <p>And then we set <code class="selector">section</code> as the snapping elements by using <code class="property">scroll-snap-align: start</code>.</p>
                 </div>
             </div>
-            <button>Chuyển trang</button>
-        </div>
-        <div class="page page-right">
-            <div class="title">Tạp Chí</div>
-            <div class="content" id="scrolling-content">
+        </section>
+        <section id="scrolling" class="section">
+            <div class="content">
                 <h2><strong>Next</strong>, we set up the <em>scrolling</em> animation</h2>
                 <div class="text">
                     <img src="https://assets.codepen.io/197359/flower-yellow.png" alt="">
@@ -290,28 +200,46 @@
                     <p>We animate the <code class="selector">.content</code> children using <code class="property">animation-timeline: --section;</code>.</p>
                 </div>
             </div>
-            <button>Quay lại</button>
-        </div>
-    </div>
-    <main>
-        <section id="snapping" class="section"></section>
-        <section id="scrolling" class="section"></section>
-        <section id="layout" class="section"></section>
-        <section id="transition" class="section"></section>
-        <section id="caveats" class="section"></section>
+        </section>
+        <section id="layout" class="section">
+            <div class="content">
+                <h2><strong>Then</strong>, we position a <em>fixed</em> layout</h2>
+                <div class="text">
+                    <img src="https://assets.codepen.io/197359/flower-blue.png" alt="">
+                    <p>We set the <code class="selector">.content</code> elements to <code class="property">position: fixed</code>, so they're removed from the normal document flow and stack on top of each other.</p>
+                    <p>Their parent <code class="selector">section</code>s are positioned as normal in the layer below.</p>
+                </div>
+            </div>
+        </section>
+        <section id="transition" class="section">
+            <div class="content">
+                <h2><strong>Finally</strong>, we create the <em>transition</em> effects</h2>
+                <div class="text">
+                    <img src="https://assets.codepen.io/197359/flower-red.png" alt="">
+                    <p>By setting the <code class="selector">.content</code> elements to <code class="property">position: fixed</code>, we can now transition between them.</p>
+                    <p>Check the navigation menu to see different effects.</p>
+                </div>
+            </div>
+        </section>
+        <section id="caveats" class="section">
+            <div class="content">
+                <h2><strong>Caveats</strong></h2>
+                <div class="text">
+                    <img src="https://assets.codepen.io/197359/flower-purple.png" alt="">
+                    <ul>
+                        <li>Scrolling animations may not work fully in all browsers.</li>
+                        <li>This layout uses <code class="property">position: fixed</code>, requiring careful stacking management.</li>
+                        <li>Snapping points may limit content access if taller than viewport.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
     </main>
     <footer>
         <p>That's it <span class="emoji">🌸</span></p>
     </footer>
     <script>
-        let flipped = false;
-        function flipMagazine() {
-            const magazine = document.querySelector('.magazine-3d');
-            flipped = !flipped;
-            magazine.classList.toggle('flipped');
-        }
-
-        // Simulate section activation
+        // Activate content based on scroll position
         const sections = document.querySelectorAll('.section');
         const contents = document.querySelectorAll('.content');
         window.addEventListener('scroll', () => {
@@ -326,4 +254,3 @@
     </script>
 </body>
 </html>
-
